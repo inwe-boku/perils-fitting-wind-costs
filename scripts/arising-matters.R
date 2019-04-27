@@ -2,7 +2,7 @@ library(ggplot2)
 library(tidyverse)
 library(XML)
 
-
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 rinne_derivative<-function(r, hh, age){
   
@@ -13,6 +13,7 @@ rinne_derivative<-function(r, hh, age){
 
 radius_rotor<-seq(1,100,1)
 derivatives_rinne <- NULL
+
 for(hub_height in seq(50,150,20)){
   max_power<-rinne_derivative(radius_rotor, hub_height, 0)
   max_power<-tibble(radius_rotor,max_power,hub_height=rep(hub_height,length(radius_rotor)))
@@ -25,7 +26,12 @@ turbine_models<-"http://windni.com/turbines/turbine-database/" %>%
   as_tibble() %>% 
   mutate(`Power (kW)`=str_replace(`Power (kW)`,",","")) %>% 
   mutate(`Power (kW)`=as.numeric(`Power (kW)`),`Diameter (m)`=as.numeric(`Diameter (m)`)) %>% 
-  filter(`Diameter (m)`<200)
+  filter(`Diameter (m)`<200) %>% mutate(power=`Power (kW)`/10^3, radius=`Diameter (m)`/2) %>% 
+  mutate(max_power=rinne_derivative(radius,2*radius,0)) %>% 
+  mutate(unlikely_region=ifelse(power>max_power,"Turbine cheaper than maximum cost","Turbine more expensive than maximum cost"))
+
+turbine_models %>% filter(Availability == "Under production") %>% 
+  ggplot(aes(x=radius,y=power)) + geom_point(aes(col=as.character(unlikely_region)))
 
 
 
