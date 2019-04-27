@@ -10,7 +10,7 @@ Additionally, I downloaded real turbine data (i.e. power and rotor length) and a
 
 This is the result:
 
-![alt text](../figures/max_power_rinne_vs_real_turbines.png)
+![alt text](figures/max_power_rinne_vs_real_turbines.png)
 
 
   
