@@ -1,2 +1,6 @@
 data/*
 scripts/cost-*
+
+scripts/.Rhistory
+
+
