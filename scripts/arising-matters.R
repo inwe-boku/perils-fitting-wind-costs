@@ -1,5 +1,7 @@
 ### Script for Arising Matter "The perils of automated fitting of datasets: the case of a wind turbine cost model"
-### Author: J. Schmidt
+### Authors: Kloeckl, C., Gruber, K., Regner, P., Schmidt, J.
+### University of Natural Resources and Life Sciences, Institute for Sustainable Economic Development
+
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
@@ -16,7 +18,7 @@ power<-3
 plot_feasible_infeasible_curve(rotor, 
                                hub_height, 
                                age, 
-                               "Figure_1.png",
+                               "figure-1.png",
                                power)
 
 
@@ -30,13 +32,13 @@ unzip(f,exdir="../data")
 
 ### read turbines
 turbines_download<-read_delim("../data/uswtdb_v2_0_20190417.csv",delim=",") %>% 
-  select(t_cap,t_hh,t_rd, p_year) %>% 
+  dplyr::select(t_cap,t_hh,t_rd, p_year) %>% 
   na.omit() %>% 
   unique() %>% 
   mutate(power=t_cap/1000,hub_height=t_hh,radius=t_rd/2,age=2016-p_year) %>% 
   mutate(age=ifelse(age<0,0,age)) %>% 
   mutate(max_power=rinne_derivative(radius,hub_height,age)) %>% 
-  mutate(unlikely_region=ifelse(power<max_power,"Turbine in plausible region","Turbine in implausible region")) %>% 
+  mutate(unlikely_region=ifelse(power<max_power,"Plausible","Implausible")) %>% 
   mutate(data_rinne = 10) %>% 
   mutate(power_density=power*10^6/(radius^2*pi))
 
@@ -50,7 +52,7 @@ turbines_download %>%
   ggplot(aes(x=age,y=power_density)) + 
   geom_point(aes(col=Region, size=`Hub height`)) +
   xlab("Age") + 
-  ylab("Power density (W/m^2)") +
-  scale_color_manual(values=c(colors[2],colors[1])) 
+  ylab(bquote('Power density (W'~m^-2~')')) +
+  scale_color_manual(values=c(colors[1],colors[2])) 
 
-ggsave("../figures/Figure_2.png")
+ggsave("../figures/figure-2.png")

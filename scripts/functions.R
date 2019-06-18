@@ -65,7 +65,7 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
     figure<-bind_rows(feasible_curve, infeasible_curve) %>% 
       ggplot(aes(x=power_range,y=total_costs)) + 
       geom_line(aes(col=Region),size=2) +
-      xlab("Power (MW)") + ylab("Total costs of Turbine ($)") + 
+      xlab("Power (MW)") + ylab("Total costs of Turbine (Million Euro)") + 
       geom_point(aes(x=x_max,y=y_max),size=2) +
       scale_color_manual(values=c(colors[1],colors[2]))
   }
