@@ -5,8 +5,6 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 source("functions.R")
 
-colorsERC10<-c("#6e9b9e", "#c72321")
-
 ### Calculate cost curves for Rinne turbine
 ### V90 3M, Radius 45 Meter, Hub height 75
 

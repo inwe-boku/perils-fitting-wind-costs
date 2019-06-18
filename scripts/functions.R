@@ -67,7 +67,7 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
       geom_line(aes(col=Region),size=2) +
       xlab("Power (MW)") + ylab("Total costs of Turbine ($)") + 
       geom_point(aes(x=x_max,y=y_max),size=2) +
-      scale_color_manual(values=c(colorsERC10[6],colorsERC10[1]))
+      scale_color_manual(values=c(colors[1],colors[2]))
   }
   
   plot(figure)
