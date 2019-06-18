@@ -1,5 +1,9 @@
 data/*
+!data/empty.txt
+
 scripts/cost-*
+
+
 
 scripts/.Rhistory
 
