@@ -36,7 +36,7 @@ turbines_download<-read_delim("../data/uswtdb_v2_0_20190417.csv",delim=",") %>%
   mutate(power=t_cap/1000,hub_height=t_hh,radius=t_rd/2,age=2016-p_year) %>% 
   mutate(age=ifelse(age<0,0,age)) %>% 
   mutate(max_power=rinne_derivative(radius,hub_height,age)) %>% 
-  mutate(unlikely_region=ifelse(power<max_power,"Turbine in  plausible region","Turbine in implausible region")) %>% 
+  mutate(unlikely_region=ifelse(power<max_power,"Turbine in plausible region","Turbine in implausible region")) %>% 
   mutate(data_rinne = 10) %>% 
   mutate(power_density=power*10^6/(radius^2*pi))
 
@@ -45,10 +45,10 @@ turbines_download<-read_delim("../data/uswtdb_v2_0_20190417.csv",delim=",") %>%
 
 turbines_download %>% 
   mutate(Region=as.character(unlikely_region)) %>% 
-  mutate(`Hub Height`=hub_height) %>% 
+  mutate(`Hub height`=hub_height) %>% 
   arrange(unlikely_region) %>%           
   ggplot(aes(x=age,y=power_density)) + 
-  geom_point(aes(col=Region, size=`Hub Height`)) +
+  geom_point(aes(col=Region, size=`Hub height`)) +
   xlab("Age") + 
   ylab("Power density (W/m^2)") +
   scale_color_manual(values=c(colors[2],colors[1])) 
