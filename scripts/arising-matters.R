@@ -18,9 +18,12 @@ power<-3
 plot_feasible_infeasible_curve(rotor, 
                                hub_height, 
                                age, 
-                               "Rinne_cost_curve.png",
+                               "Figure_1.png",
                                power)
 
+
+
+### Check plausible/implausible regions for all turbines in US windturbine database
 
 ### download data from US windturbine database
 f<-"../data/tempturbines.zip"
@@ -43,12 +46,13 @@ turbines_download<-read_delim("../data/uswtdb_v2_0_20190417.csv",delim=",") %>%
 ### plot plausible and implausible turbines
 
 turbines_download %>% 
+  mutate(Region=as.character(unlikely_region)) %>% 
+  mutate(`Hub Height`=hub_height) %>% 
   arrange(unlikely_region) %>%           
   ggplot(aes(x=age,y=power_density)) + 
-  geom_point(aes(col=as.character(unlikely_region))) +
+  geom_point(aes(col=Region, size=`Hub Height`)) +
   xlab("Age") + 
   ylab("Power density (W/m^2)") +
-  scale_color_manual(values=c(colors[1],colors[2])) + 
-  theme(legend.title = element_blank())
+  scale_color_manual(values=c(colors[2],colors[1])) 
 
-ggsave("../figures/max_power_rinne_vs_real_turbines.png")
+ggsave("../figures/Figure_2.png")
