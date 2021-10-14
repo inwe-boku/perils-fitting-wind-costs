@@ -49,13 +49,14 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
                                      age)/10^6
 
     figure<-bind_rows(feasible_curve, infeasible_curve) %>%
+      mutate(`Turbine`="Vestas V90-3.0MW") %>%
       ggplot(aes(x=power_range,y=total_costs)) +
       geom_line(aes(col=Region),size=2) +
-      xlab("Power (MW)") + ylab("Total costs of Turbine \n(Million Euro)") +
+      xlab("Rated power (MW)") + ylab("Total costs of Turbine \n(Million Euro)") +
       geom_point(aes(x=x_max,y=y_max),size=2) +
       scale_color_manual(values=c(colors[1],colors[2])) +
-      geom_point(aes(x=power, y=cost_max_power),size=6,shape=4, stroke=3)
-
+      geom_point(aes(x=power, y=cost_max_power, shape=`Turbine`), size=6, stroke=3)+
+      scale_shape_manual(values=c(4))
 
   } else{
 
@@ -67,6 +68,7 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
       geom_line(aes(col=Region),size=2) +
       xlab("Power (MW)") + ylab("Total costs of Turbine (Million Euro)") +
       geom_point(aes(x=x_max,y=y_max),size=2) +
+
       scale_color_manual(values=c(colors[1],colors[2]))
   }
 

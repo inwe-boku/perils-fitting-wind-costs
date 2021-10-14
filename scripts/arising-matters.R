@@ -45,13 +45,14 @@ turbines_download<-read_delim("../data/uswtdb_v4_1_20210721.csv",delim=",") %>%
 
 ### plot plausible and implausible turbines
 turbines_download %>%
+  filter(power_density<700) %>%
   mutate(`Hub height`=hub_height) %>%
   arrange(desc(unlikely_region)) %>%
   mutate(Region=unlikely_region) %>%
   ggplot(aes(x=age,y=power_density)) +
   geom_point(aes(col=Region, size=`Hub height`)) +
   xlab("Age") +
-  ylab(bquote('Power density (W'~m^-2~')')) +
+  ylab(bquote('Specific power (W'~m^-2~')')) +
   scale_color_manual(values=c(colors[1],colors[2]))
 
 ggsave("../figures/figure-2.png")
