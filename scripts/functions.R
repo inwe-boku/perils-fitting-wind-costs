@@ -49,7 +49,7 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
                                      age)/10^6
 
     figure<-bind_rows(feasible_curve, infeasible_curve) %>%
-      mutate(`Turbine`="Vestas V90-3.0MW") %>%
+      mutate(`Turbine`="E-126") %>%
       ggplot(aes(x=power_range,y=total_costs)) +
       geom_line(aes(col=Region),size=2) +
       xlab("Rated power (MW)") + ylab("Total costs of Turbine \n(Million Euro)") +

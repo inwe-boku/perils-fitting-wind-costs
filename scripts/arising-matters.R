@@ -10,10 +10,18 @@ source("functions.R")
 ### Calculate cost curves for Rinne turbine
 ### V90 3M, Radius 45 Meter, Hub height 75
 
-rotor<-45
-hub_height<-75
-age<-12
-power<-3
+#rotor<-45
+#hub_height<-75
+#age<-3
+#power<-3
+
+rotor<-63
+hub_height<-135
+age<-0
+power<-7.5
+
+
+theme_set(theme_bw(base_size = 16))
 
 plot_feasible_infeasible_curve(rotor,
                                hub_height,
@@ -46,12 +54,12 @@ turbines_download<-read_delim("../data/uswtdb_v4_1_20210721.csv",delim=",") %>%
 ### plot plausible and implausible turbines
 turbines_download %>%
   filter(power_density<700) %>%
-  mutate(`Hub height`=hub_height) %>%
+  mutate(`Hub height (m)`=hub_height) %>%
   arrange(desc(unlikely_region)) %>%
   mutate(Region=unlikely_region) %>%
   ggplot(aes(x=age,y=power_density)) +
-  geom_point(aes(col=Region, size=`Hub height`)) +
-  xlab("Age") +
+  geom_point(aes(col=Region, size=`Hub height (m)`)) +
+  xlab("Age (Years before 2016)") +
   ylab(bquote('Specific power (W'~m^-2~')')) +
   scale_color_manual(values=c(colors[1],colors[2]))
 
