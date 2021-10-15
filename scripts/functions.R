@@ -16,15 +16,19 @@ rinne_total_costs<-function(power, r, hh, age){
   return(10^3*power * (610*log(hh)-1.68*power*10^6/(r^2*pi)+182*sqrt(age)-1005))
 }
 
-plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power = 0)
+plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power = 0, max_power = 2)
 {
 
 
   x_max<-rinne_derivative(rotor, hub_height, age)
   y_max<-rinne_total_costs(x_max, rotor, hub_height ,age)/10^6
 
+  print(paste0("Power density Turbine:",power*1E6/(rotor^2*pi)))
+  print(paste0("Power density at max:",x_max*1E6/(rotor^2*pi)))
+  print(paste0("xmax:",x_max))
+  
 
-  power_range_feasible<-seq(0,x_max,0.1)
+  power_range_feasible<-seq(0,x_max,0.01)
   feasible_curve<-tibble(power_range=power_range_feasible,
                          total_costs=rinne_total_costs(power_range_feasible,
                                                        rotor,
@@ -32,7 +36,7 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
                                                        age)/10^6,
                          Region="Plausible")
 
-  power_range_infeasible<-seq(x_max,10,0.1)
+  power_range_infeasible<-seq(x_max,max_power,0.01)
   infeasible_curve<-tibble(power_range=power_range_infeasible,
                            total_costs=rinne_total_costs(power_range_infeasible,
                                                          rotor,
@@ -49,7 +53,7 @@ plot_feasible_infeasible_curve<-function(rotor, hub_height, age, filename, power
                                      age)/10^6
 
     figure<-bind_rows(feasible_curve, infeasible_curve) %>%
-      mutate(`Turbine`="E-126") %>%
+      mutate(`Turbine`="Vestas V42") %>%
       ggplot(aes(x=power_range,y=total_costs)) +
       geom_line(aes(col=Region),size=2) +
       xlab("Rated power (MW)") + ylab("Total costs of Turbine \n(Million Euro)") +
