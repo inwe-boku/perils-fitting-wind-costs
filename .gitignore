@@ -1,6 +1,3 @@
-data/*
-!data/empty.txt
-
 scripts/cost-*
 
 
@@ -8,3 +5,4 @@ scripts/cost-*
 scripts/.Rhistory
 
 
+scripts/.RData
